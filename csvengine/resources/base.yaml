@@ -1,0 +1,10 @@
+data:
+    web_submit: 'web/submit/'
+    db_submit: 'db/submit/'
+    tmp_submit: 'tmp/submit/'
+    web_cleaned: 'web/cleaned/'
+    db_cleaned: 'db/cleaned/'
+    tmp_cleaned: 'tmp/cleaned/'
+ui:
+    maxFileSize: 1048576
+    port: 2340

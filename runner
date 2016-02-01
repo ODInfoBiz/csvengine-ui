@@ -1,0 +1,4 @@
+#! /usr/bin/env python
+
+import csvengine.csvengine
+csvengine.csvengine.start ()

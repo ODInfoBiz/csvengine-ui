@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% import 'forms.html' as forms %}
+  
+{% set active_page = "csvmval" -%}
+
+
+{% block title %}CSV Validate -{% endblock %}
+
+
+
+{% block content %}
+  <div class="mdl-grid ce-wide-card">
+    <div class="mdl-cell mdl-cell--3-col"></div>
+    <div class="mdl-cell mdl-cell--6-col">
+        <div class=" mdl-card mdl-shadow--2dp">
+                  {{ forms.submit('CSV Validation - Submit', 'csvmval', 'validate my csv') }}
+        </div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet">&nbsp;</div>
+</div>
+        
+    
+     <!-- Your content goes here -->
+         
+ <!-- 
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--1-col"></div>
+            <div class="mdl-cell mdl-cell--10-col">
+                <h4>Table recommendation</h4>
+            </div>
+        </div>
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--4-col"></div>
+            <div class="mdl-cell mdl-cell--6-col">
+            
+                <form action="/submit" method=post enctype=multipart/form-data>
+                    <input type="hidden" name="service" value="rec">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--file mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input"  type="text" id="url" name="url" />
+                        <label class="mdl-textfield__label" for="sample3">URL...</label>
+                        <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+                            <i class="material-icons" >attach_file</i><input type="file" id="uploadBtn" name="uploadBtn">
+                            <div class="mdl-tooltip" for="uploadBtn">Follow</div>
+                        </div>
+                    </div>
+                    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Recommend</button>
+                </form>
+            </div>
+        </div>-->
+{% endblock %}
+{% block script %}
+
+document.getElementById("uploadBtn").onchange = function () {
+    document.getElementById("url").value = this.files[0].name;
+};
+
+
+{% endblock %}

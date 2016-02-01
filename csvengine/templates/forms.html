@@ -1,0 +1,91 @@
+{% macro submit(title, service, button) -%}
+<div class="mdl-card mdl-shadow--2dp">
+    <form action="{{ url_for('datacache.submit')}}" method=post enctype=multipart/form-data id="form">
+        <div class="mdl-card__title" >
+            <h2 class="mdl-card__title-text">{{ title }}</h2>
+            
+        </div>
+        <div class="mdl-card__supporting-text">
+            <input type="hidden" name="service" value="{{ service }}_service">
+            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                <div class="mdl-tabs__tab-bar">
+			      <a href="#urlSubmit" class="mdl-tabs__tab is-active">URL</a>
+			      <a href="#fileSubmit" class="mdl-tabs__tab">File</a>
+			      <a href="#textSubmit" class="mdl-tabs__tab">Copy & Paste</a>
+                </div>
+
+                <div class="mdl-tabs__panel is-active " id="urlSubmit">
+			    <!-- URL submission -->
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+	                        <!-- pattern="(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})" -->
+	                        <input class="mdl-textfield__input" type="text" id="url" name='url' pattern="^$|(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})"/>
+		                   <label class="mdl-textfield__label">URL</label>
+		                   <span class="mdl-textfield__error">Validating URL ...</span>
+	                    </div>
+                </div>
+                <div class="mdl-tabs__panel mdl_grid" id="fileSubmit">
+                <!--  File ID submission -->
+                    
+                    <div class="mdl-cell mdl-cell--12-col">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                        <input class="mdl-textfield__input" type="text" id="fileID" name='fileID' />
+                        <label class="mdl-textfield__label">Existing File id</label>
+                    </div>
+                    <!--  file upload -->
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--file mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                        <input class="mdl-textfield__input"  type="text" id="Upload" placeholder="File upload" name="fileUpload" readonly/>
+                        <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+                            <i class="material-icons" >attach_file</i>
+                            <input type="file" id="uploadBtn" name="uploadBtn">
+                                <div class="mdl-tooltip" for="uploadBtn">Upload</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="mdl-tabs__panel" id="textSubmit">
+                    <!--  copy paste -->
+                    <div class="mdl-textfield mdl-js-textfield  mdl-cell mdl-cell--12-col">
+                        <textarea class="mdl-textfield__input" type="text" rows= "3" id="textUpload" cols="80" name="textUpload"></textarea>
+                        <label class="mdl-textfield__label" for="sample5">CSV lines...</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-grid">
+	            <div class="mdl-cell mdl-cell--6-col">
+	                <button class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="submit">{{ button }}</button>
+	             </div>
+	             <div  class="mdl-cell mdl-cell--6-col">
+	                <label for="chkbox1" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	                    <input type="checkbox" id="chkbox1" name="check" class="mdl-checkbox__input">
+	                    <span class="mdl-checkbox__label">Please, do not cache my data!</span>
+	                </label>
+	            </div>
+            </div>
+        </div>
+    </form>
+</div>    
+{%- endmacro %}
+
+{% macro js() -%}
+    document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("Upload").value = this.files[0].name;
+    };
+    $("#form").submit(function(e) {
+        
+        emptyInput = $('input:text').filter(function() { return $(this).val() == ""; }).length
+        if( !$("#textUpload").val() && emptyInput ==3) {
+            alert("No input specified")
+            return false
+        }
+        if( emptyInput < 2 || ( emptyInput != 3 && $("#textUpload").val() ) )  {
+            alert('Multiple input fields are provided');
+            return false;
+        }
+        return true;
+        
+    })
+
+{%- endmacro %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Portal List{% endblock %}  
+{% set active_page = "index" -%}
+{% block content %}
+     <!-- Your content goes here -->
+         
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--1-col"></div>
+            <div class="mdl-cell mdl-cell--10-col">
+                <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+                    <div class="mdl-card mdl-cell mdl-cell--12-col">
+                    <div class="mdl-card__title mdl-color--blue-grey-300">
+                        <h2 class="mdl-card__title-text">How Your Data is Stored</h2>
+                    </div>
+                        <div class="mdl-card__supporting-text">
+                            The CSVEngine stores by default user submitted files or the content of URLs.
+                            We provide a input flag to avoid caching of your submitted data.
+                        </div>
+                    </div>
+        
+                </section>
+            </div>
+        </div>
+       
+
+  
+ {% endblock %}
+
+

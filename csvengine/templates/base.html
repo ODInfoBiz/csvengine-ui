@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  {% block head %}
+        <title>
+            {% block title %} {% endblock %} CSV Engine
+        </title>
+        
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        
+        <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('.static', filename='css/material.min.css')}}">
+        <link rel="stylesheet" href="{{ url_for('.static', filename='css/style.css')}}">
+        <!-- <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.blue_grey-deep_orange.min.css" />  -->
+        
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('.static', filename='js/material.min.js')}}"></script>
+        
+        <style>
+            {% block style %}
+            {% endblock %}
+        </style>
+    {% endblock %}
+  </head>
+    <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+        <!-- Always shows a header, even in smaller screens. -->
+        <div class="mdl-layout mdl-js-layout ">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                <!-- Title -->
+                    <span class="mdl-layout-title">CSV Engine</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <!--  this needs to go to the backend -->
+                        {% set active_page = active_page| default('index') -%}
+                        
+                        {% for href, id, caption in navigation_bar %}
+                        <a class="mdl-navigation__link  {% if id == active_page %} is-active {% endif%}" href="{{ url_for(href) }}">       
+                            {{ caption|e }}
+                        </a>
+                        {% endfor %}
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">CSV Engine</span>
+                <nav class="mdl-navigation">
+                    {% set active_page = active_page|default('index') -%}
+                    {% for href, id, caption in navigation_bar %}
+                    <a class="mdl-navigation__link mdl-layout__tab {% if id == active_page %} is-active {% endif%}" href="{{ url_for(href) }}">
+                        {{ caption|e }}
+                    </a>
+                    {% endfor %}
+                </nav>
+            </div>
+  
+            <main class="mdl-layout__content" style="flex: 1 0 auto;">
+                <div class="page-content">
+                {% block content %}
+    
+                {% endblock %}
+                </div>
+            </main>
+    
+            <footer class="mdl-mini-footer">
+                <div class="mdl-mini-footer__left-section">
+                    <div class="mdl-logo">CSV Engine</div>
+                    <ul class="mdl-mini-footer__link-list">
+                        <li>
+                            <a href="{{ url_for('privacy') }}">Privacy & Terms</a>
+                        </li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+        {% block script %}
+    
+        {% endblock %}
+        </script>
+    </body>
+</html>

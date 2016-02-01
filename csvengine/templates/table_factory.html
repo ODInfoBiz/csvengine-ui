@@ -1,0 +1,155 @@
+{% macro table_fromData(data,actionLabel, actionURL) -%}
+{{table(data.title, data.cols, data.rows, data.encoding, data.delimiter, data.sample, data.orig,actionLabel, actionURL)}}
+{%- endmacro %}
+{% macro table(url, cols, rows, encoding, delimiter, sample, orig, actionLabel, actionURL) -%}
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--1-col"></div>
+    <div class="mdl-card mdl-cell mdl-cell--10-col tableCard">
+        {{ tableHeader(url, cols, rows, encoding, delimiter) }}
+        <div class="showhide" id="tt3" >
+            <button class="mdl-button mdl-js-button mdl-button--icon  mdl-button--colored  btn-showhide" >
+                <i class="material-icons">expand_more</i>
+            </button>
+        </div>
+        <div class="mdl-tooltip" for="tt3"> Preview <br>(5 rows)</div>
+
+        <div class="mdl-card__supporting-text tableData" style="display:none;">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                    {% if sample and orig %}
+                    <label for="switch1" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                        <input type="checkbox" id="switch1" class="mdl-switch__input" checked>
+                        <span class="mdl-switch__label" id="label">Table Preview</span>
+                        <div class="mdl-tooltip" for="label"> Preview <br>(10 rows)</div>
+                    </label>
+                    {% endif %}
+                    {% if sample %}
+                    <div class="table tablewrapper">
+                        <table class="mdl-data-table mdl-js-data-table full-width">
+	                        <thead>
+	                            <tr >
+	                            {% for header in sample[0] %}
+	                                <th class="mdl-data-table__cell--non-numeric">{{header}}</th>
+	                            {% endfor %}
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                        {% for row in sample %}
+	                           {% if loop.index != 1 %}
+	                           <tr>
+	                               {% for value in row %}
+	                                   <td class="mdl-data-table__cell--non-numeric">{{value}}</td>
+	                               {% endfor %}
+	                           </tr>
+	                           {% endif  %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {%if orig %}
+                    <div class="raw" {% if sample %} style="display:none;" {% endif %}>
+                        <pre style="height:300px; overflow-y:auto;">{{ orig }}</pre>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="mdl-card__actions mdl-card--border">
+            <form action="{{actionURL }}" method="post">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit">{{actionLabel}}</button>
+            </form>            
+        </div>
+    </div><!--  END MDL-CARD -->
+</div> <!--  END MDL-GRID -->
+{%- endmacro %}
+
+
+{% macro tableHeader(url, cols, rows, encoding, delimiter) -%}
+ <div class="mdl-card__title mdl-card--border">
+	 <h6 style="margin:0px">
+	     <div class="mdl-card__title-text">
+	         <a class="urlize" href="{{ url }}" id="url">{{ url }}</a>                            
+	     </div>
+	     <div class="mdl-card__subtitle-text">
+	         {% if encoding %} 
+	           <b>{{ encoding }}</b> encoded 
+	         {% endif %}
+	         {% if delimiter %}
+	         <b>{{ delimiter }}</b> delimiter
+	         {% endif %}
+	     </div>
+	 </h6>
+</div>
+<div class="mdl-card__menu">
+	<p  class="icon" id="colrows"><i class="material-icons">border_all</i>{{ rows }}  x {{ cols}}</p>
+	<div class="mdl-tooltip" for="colrows">
+	    Table has <br> {{ rows }} rows <br> {{ cols}} columns
+	</div>                
+</div>
+{%- endmacro %}
+
+
+{% macro tableCSS() -%}
+    .urlize{
+        overflow: hidden; /* to hide anything that doesn't fit in the containing element. */
+        white-space: nowrap; /* to make sure the line doesn't break when it is longer than the containing div. */
+        text-overflow: ellipsis; /* to do what you want. */
+   }
+   .icon{
+    display: inline-flex;
+    vertical-align: middle;
+    }
+    .showhideTop{
+        position: absolute;
+        top: 95px;
+        right: 50%;
+        transform: translate(0px, -28px);
+        z-index: 900;
+    }
+    .showhide{
+        position: absolute;
+        bottom: 5px;
+        right: 50%;
+        transform: translate(0px, -28px);
+        z-index: 900;
+    }
+
+    .tableCard{
+        min-height:0px;
+    }
+{%- endmacro %}
+
+
+{% macro tableJS() -%}
+
+    $(".btn-showhide").click(function(){
+
+        table = $(this).parent().siblings(".tableData")
+        console.log(table)
+        table.toggle()
+        if (table.is(":visible")){
+            $(this).find('i').text('expand_less')
+            
+        }else{
+            $(this).find('i').text('expand_more')
+        }
+    });
+    $(".mdl-switch__input").change(function(){
+        if ($(this).is(':checked')) {
+        
+            table = $(this).parent().siblings(".table").show()
+            $(this).siblings(".mdl-switch__label").text("Table Preview")
+
+            raw = $(this).parent().siblings(".raw").hide()
+
+        }
+        else{
+            table = $(this).parent().siblings(".table").hide()
+            $(this).siblings(".mdl-switch__label").text("Raw Content")
+            raw = $(this).parent().siblings(".raw").show()
+            }
+
+    });
+{%- endmacro %}

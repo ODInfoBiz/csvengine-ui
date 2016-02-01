@@ -1,0 +1,256 @@
+
+{% macro textfield(label, id, type, value, default) -%}
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+    <input class="mdl-textfield__input {% if value is defined %} mdl-color-text--black {% endif %}" type="{{ type }}" id="{{ id }}" name="{{ id }}" {% if value is defined %} value={{default}} readonly {% endif %}/>
+    <label class="mdl-textfield__label {% if value is defined %} mdl-color-text--primary {% endif %}">{{ label }}</label>
+</div>
+{%- endmacro %}
+
+{% macro dialectDescription(data) -%} 
+<div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--4dp">     
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Dialect Description</h2>
+    </div>   
+	<div class="mdl-card__supporting-text">
+        {{ textfield('Encoding', 'encoding', 'text', data.table.encoding, data.table.encoding ) }}
+        {{ textfield('Delimiter', 'delimiter', 'text', data.table.delimiter, data.table.delimiter ) }}
+        {{ textfield('Line terminator', 'lineTerminator', 'text', '\\n', '\\n' ) }}
+	    {{ textfield('Quote char', 'quoteChar', 'text',data.table.quotechar, data.table.quotechar ) }}
+	    
+	    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+	        <label for="doubleQuote" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	            <input type="checkbox" id="doubleQuote" class="mdl-checkbox__input" name="doubleQuote">
+	            <span class="mdl-checkbox__label">doubleQuote</span>
+	        </label>
+	    </div>
+	    
+	    {{ textfield('skipRows', 'skipRows', 'number', Null, Null ) }}
+	    {{ textfield('commentPrefix', 'commentPrefix', 'text', Null, Null ) }}
+        
+        <div class="mdl-textfield mdl-js-textfield  mdl-textfield--floating-label">
+	        <label for="header" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	            <input type="checkbox" id="header" class="mdl-checkbox__input" name="header" {% if data.table.header_line is defined %} checked readonly {% endif %}>
+	            <span class="mdl-checkbox__label">header</span>
+	        </label>
+	    </div>
+	    {{ textfield('headerRowCount', 'headerRowCount', 'number',data.table.header_line, 1 ) }}
+	    <!-- <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+	        <input class="mdl-textfield__input" type="number" id="headerRowCount" name="headerRowCount" {% if data.table.header_line is defined %} value=1 disabled {% endif %}/>
+	        <label class="mdl-textfield__label"></label>
+	    </div>
+	     -->
+	    <div class="mdl-textfield mdl-js-textfield  mdl-textfield--floating-label">
+	        <label for="skipBlankRows" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	            <input type="checkbox" id="skipBlankRows" class="mdl-checkbox__input" name="skipBlankRows">
+	            <span class="mdl-checkbox__label">skipBlankRows</span>
+	        </label>
+	    </div>
+	    <div class="mdl-textfield mdl-js-textfield  mdl-textfield--floating-label">
+	        <label for="skipInitialSpace" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	            <input type="checkbox" id="skipInitialSpace" class="mdl-checkbox__input" name="skipInitialSpace">
+	            <span class="mdl-checkbox__label">skipInitialSpace</span>
+	        </label>
+	    </div>
+	    <div class="mdl-textfield mdl-js-textfield  mdl-textfield--floating-label">
+	        <label for="trim" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	            <input type="checkbox" id="trim" class="mdl-checkbox__input" name="trim">
+	            <span class="mdl-checkbox__label">trim</span>
+	        </label>
+	    </div>
+	</div>
+</div>
+{%- endmacro %}
+
+{% macro tableDescription(data) -%} 
+<div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Table Description</h2>
+    </div>
+    <!-- <details  id="details_metadata"> <summary>Metadata</summary> --> 
+    <div class="mdl-card__supporting-text">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="url" id="tableURL" name="tableURL" {% if data.url is defined %} value="{{data.url}}"  {% else %} pattern="^$|(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})"{% endif %}/>
+            <label class="mdl-textfield__label">URL</label>
+            <span class="mdl-textfield__error">Invalid URL</span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <span class="mdl-textfield__label">Language</span>
+          <input  list="languages"  name="language"  id="language"  class="metadata mdl-textfield__input" pattern="[a-zA-Z]{2}">
+          <datalist  id="languages">
+              <select style="display: none;">
+                    <option  value="en">English</option>
+                    <option  value="de">German</option>
+                    <option  value="fr">French</option>
+                    <option  value="it">Italian</option>
+              </select>
+          </datalist> 
+          <span class="mdl-textfield__error">Language tag allows only 2 characters</span>
+          
+      </div>
+      <div class="mdl-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="tableTitle" name='tableTitle' />
+          <label class="mdl-textfield__label">Title</label>                             
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+             <input class="mdl-textfield__input" type="text" id="tableKeyword" name='tableKeyword' pattern="[A-Za-z0-9\S]{1,25}" >
+             <span class="mdl-textfield__error">
+                Please seperate keywords with a semicolon. ( ; )
+             </span>
+             <label class="mdl-textfield__label">Keywords</label>
+        </div>
+        <div>
+         
+         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+             <input class="mdl-textfield__input" type="text" id="pubName" name="pubName" />
+             <label class="mdl-textfield__label">Publisher Name</label>
+         </div>
+         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+             <input class="mdl-textfield__input" type="text" id="pubURL" name="pubURL" pattern="^$|(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})"/>
+             <label class="mdl-textfield__label">Publisher URL</label>
+             <span class="mdl-textfield__error">Invalid URL pattern</span>
+         </div>
+         </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+             <input  list="licenses"  name="license"  id="language"  class="metadata mdl-textfield__input" pattern="^$|(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})">
+             <datalist  id="licenses">
+                 <select style="display: none;">
+                       <option  value="http://www.opendefinition.org/licenses/odc-pddl">Open Data Commons Public Domain Dedication and Licence 1.0</option>
+                      <option  value="http://www.opendefinition.org/licenses/odc-odbl">Open Data Commons Open Database License 1.0</option>
+                      <option  value="http://www.opendefinition.org/licenses/odc-by">Open Data Commons Attribution License 1.0</option>
+                      <option  value="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</option>
+                      <option  value="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</option>
+                      <option  value="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution Share-Alike 4.0</option>
+                      <option  value="http://www.opendefinition.org/licenses/gfdl">GNU Free Documentation License 1.3 with no cover texts and no invariant sections</option>
+                      <option  value="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/">Open Government Licence 2.0 (United Kingdom)</option>
+                 </select>
+             </datalist> 
+              <label class="mdl-textfield__label">License</label>
+              <span class="mdl-textfield__error">Invalid URL pattern</span>
+         </div>
+         <div class="mdl-textfield mdl-js-textfield  mdl-textfield--floating-label">
+             <input class="mdl-textfield__input" type="text" id="lastMod" name="lastMod" value="{{ data.time}}"/>
+             <label class="mdl-textfield__label">Last Modified</label>
+         </div>
+     </div>
+ </div>
+
+{%- endmacro %}
+
+
+{% macro columnEditor(data) -%}
+<div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--4dp">
+	<div class="mdl-card__title">
+	    <h2 class="mdl-card__title-text">Column Description</h2>
+	</div>
+	<div class="mdl-card__supporting-text" style="height:500px;">
+	    <div class="mdl-layout mdl-js-layout">
+		    <!-- Header Container -->
+		    <div class="mdl-layout__header">
+		        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+		        {% for pos in data.table.header_line %}
+		            <a href="#a{{loop.index}}" class="mdl-layout__tab {% if loop.index == 1 %} is-active {% endif %}">{{pos}} </a>    
+		        {% endfor %}
+		        </div>
+		    </div>
+		                    
+		    <div class="mdl-layout__content" >
+		        <!-- "is-active" class to set the default active tab -->
+		        {% for pos in data.table.header_line %}
+			        <div class="mdl-layout__tab-panel {% if loop.index == 1 %} is-active {% endif %}" id="a{{loop.index}}">
+			            {{ metacolumn(data.table.sample, loop.index-1 ) }}                        
+			        </div>
+		        {% endfor %}
+		    </div>
+        </div>
+    </div>
+</div>    
+{%- endmacro %}
+
+{% macro metacolumn(sample, index, maxRows=7) -%}
+<div class="mdl-grid">
+	<table class="mdl-cell mdl-cell--6-col mdl-data-table mdl-js-data-table">
+	    <thead>
+	        <tr><th>{{sample[0][index]}}</th></tr></thead>
+	    <tbody>
+	    {% for val in sample %}
+	        {% if loop.index != 1 and loop.index <=maxRows %}
+	            <tr><td>{{val[index]}}</td></tr>
+	        {% endif %}
+	    {% endfor %}
+	    </tbody>
+	</table>
+    <div class="mdl-cell mdl-cell--6-col">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+            <input class="mdl-textfield__input" type="text" id="name" name='col-{{index}}--name' value="{{sample[0][index]}}"/>
+            <label class="mdl-textfield__label">Name</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+            <input class="mdl-textfield__input" type="text" id="title" name='col-{{index}}--title' />
+            <label class="mdl-textfield__label">Title</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+            <input class="mdl-textfield__input" type="text" id="Description" name='col-{{index}}--dc:description' />
+            <label class="mdl-textfield__label">Description</label>
+        </div>
+        <!-- datatype -->
+        <div class="mdl-textfield mdl-js-textfield">
+            <select  name="col-{{index}}--datatype" class="table_metadata">
+	            <option value="anyURI">anyURI</option>
+				<option value="base64Binary">base64Binary</option>
+				<option value="boolean">boolean</option>
+				<option value="date">date</option>
+				<option value="dateTime">dateTime</option>
+				<option value="dateTimeStamp">&nbsp &nbsp dateTimeStamp</option>
+				<option value="decimal">decimal</option>
+				<option value="integer">&nbsp &nbsp Integer</option>
+				<option value="long">&nbsp &nbsp &nbsp &nbsp long</option>
+				<option value="int">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp int</option>
+				<option value="short">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp short</option>
+				<option value="byte">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp byte</option>
+				<option value="nonNegativeInteger">&nbsp &nbsp &nbsp &nbsp nonNegativeInteger</option>
+				<option value="positiveInteger">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp positiveInteger</option>
+				<option value="unsignedLong">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp unsignedLong</option>
+				<option value="unsignedInt">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp unsignedInt</option>
+				<option value="unsignedShort">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp unsignedShort</option>
+				<option value="unsignedByte">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp unsignedByte</option>
+				<option value="nonPositiveInteger">&nbsp &nbsp &nbsp &nbsp nonPositiveInteger</option>
+				<option value="negativeInteger">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp negativeInteger</option> 
+				<option value="double">double</option>
+				<option value="duration">duration</option>
+				<option value="dayTimeDuration">&nbsp &nbsp dayTimeDuration</option>
+				<option value="yearMonthDuration">&nbsp &nbsp yearMonthDuration</option>
+				<option value="float">float</option>
+				<option value="gDay">gDay</option>
+				<option value="gMonth">gMonth</option>
+				<option value="gMonthDay">gMonthDay</option>
+				<option value="gYear">gYear</option>
+				<option value="gYearMonth">gYearMonth</option>
+				<option value="hexBinary">hexBinary</option>
+				<option value="QName">QName</option>
+				<option value="string">string</option>
+				<option value="normalizedString">&nbsp &nbsp normalizedString</option>
+				<option value="token">&nbsp &nbsp &nbsp &nbsp token</option>
+				<option value="language">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp language</option>
+				<option value="Name">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Name</option>
+				<option value="NMTOKEN">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp NMTOKEN</option>
+				<option value="xml">&nbsp &nbsp xml</option>
+				<option value="html">&nbsp &nbsp html</option>
+				<option value="json">&nbsp &nbsp json</option>
+	            <option value="time">time</option>
+            </select>
+            <input  name="col-{{index}}--datepattern" size="26"  type="text"  style="display: none;">
+            <label class="">Datatype</label>
+        </div>
+        <!-- required key -->
+	    <label for="col-{{index}}--required" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+	        <input type="checkbox" id="col-{{index}}--required" class="mdl-checkbox__input" name="col-{{index}}--required">
+	        <span class="mdl-checkbox__label">required</span>
+        </label>
+        <!-- primary key -->
+        <label for="col-{{index}}--primaryKey" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+            <input type="checkbox" id="col-{{index}}--primaryKey" class="mdl-checkbox__input" name="col-{{index}}--primaryKey">
+            <span class="mdl-checkbox__label">primaryKey</span>
+        </label>
+    </div>
+</div>
+{%- endmacro %}

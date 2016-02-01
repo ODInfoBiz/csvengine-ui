@@ -1,0 +1,175 @@
+{% extends "base.html" %} 
+
+{% import 'csvm_forms.html' as forms %}
+
+{% block title %}CSV MetaData Editor -{% endblock %}
+{% set active_page = "csvmeditor" -%}
+
+{% block style %}
+    div.tablewrapper {
+  width: 100%;
+  
+  overflow: scroll;
+}
+
+table.column{
+max-width:100%;
+}
+.mdl-textfield{
+    width:100%;
+}
+.1showhide{
+   position: relative;
+   top: 35px;
+   left: -12px;
+   transform: translate(0px, -28px);
+   z-index: 900;
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mdl-grid">
+     <!-- Your content goes here -->
+    <div class=" mdl-cell mdl-cell--1-col "></div>
+    <div class="mdl-card mdl-cell mdl-cell--10-col mdl-shadow--4dp">
+    <form action="{{ url_for('csvm.createcsvm_service') }}" method=post id="form">
+        <div class="mdl-card__title mdl-card--border">
+            <div>
+                <div class="mdl-card__title-text ">
+                    <a href="#">test.csv</a>
+                </div>
+                <div class="mdl-card__subtitle-text " > </div>
+            </div>
+        </div>
+        <div class="mdl-card__supporting-text mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col " >
+                <div class="mdl-color--primary mdl-color-text--accent">
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--icon mdl-button--colored showhide btn-showhide" id="tt3" type="button">
+					    <i class="material-icons">expand_more</i>
+					</button>
+                    DATA
+                    <div class="mdl-tooltip" for="tt3"> Preview <br>(10 rows)</div>
+                </div>
+                <div class="show" style="display:none;">
+                    <label for="switch1" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                        <input type="checkbox" id="switch1" class="mdl-switch__input" checked>
+                        <span class="mdl-switch__label" id="label">Table Preview</span>
+                        <div class="mdl-tooltip" for="label"> Preview <br>(10 rows)</div>
+                    </label>
+                    <div class="tablewrapper table">
+						<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
+						    <thead>
+						        <tr > {% for header in data.table.sample[0] %}
+						            <th>{{header}}</th>
+						        {% endfor %}</tr>
+						    </thead>
+						    <tbody> {% for row in data.table.sample %}
+                                {% if loop.index != 1 and loop.index <= 10 %}
+						            <tr>
+						                {% for value in row %}
+						                    <td>{{value}}</td>
+						                {% endfor %}
+						            </tr>
+                                {% endif  %}
+						    {% endfor %} </tbody>
+
+						</table>
+                    </div><!--  end tablewrappe -->
+
+                    <div class="raw" style="display:none;">
+                        <pre style="height:300px; overflow-y:auto;">{{ data.orig }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mdl-card__supporting-text mdl-grid">
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class="mdl-color--primary mdl-color-text--accent">
+                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--icon mdl-button--colored showhide btn-showhide" id="tt4" type="button">
+                     <i class="material-icons">expand_more</i>
+                 </button>
+                    METADATA
+                    <div class="mdl-tooltip" for="tt4"> Preview <br>(5 rows)</div>
+                </div>
+                <div class=" show" >
+                    <div class="mdl-tabs mdl-js-tabs">
+                        <div class="mdl-tabs__tab-bar">
+                            <a href="#tab1-panel" class="mdl-tabs__tab is-active">Table Description</a>
+                            <a href="#tab2-panel" class="mdl-tabs__tab">Column Description</a>
+                            <a href="#tab3-panel" class="mdl-tabs__tab">Dialect Description</a>
+                        </div>
+                        <div class="mdl-tabs__panel is-active" id="tab1-panel">
+                            {{forms.tableDescription(data)}}
+                        </div>
+                        <div class="mdl-tabs__panel " id="tab2-panel">
+                            {{forms.columnEditor(data)}}
+                        </div>
+                        <div class="mdl-tabs__panel" id="tab3-panel">
+                            {{forms.dialectDescription(data)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect" >download metadata file</button>
+            </div>
+            <div class="mdl-card__menu">
+                <span>{{ data.rows }} rows</span>
+                <span>{{ data.cols }} cols</span>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+    
+    
+{% endblock %}
+{% block script %}
+   
+      $(".btn-showhide").click(function(){
+        table = $(this).parent().siblings(".show")
+        table.toggle()
+        if (table.is(":visible")){
+            $(this).find('i').text('expand_less')
+        }else{
+            $(this).find('i').text('expand_more')
+        }
+    });
+    
+
+    $(".mdl-switch__input").change(function(){
+        if ($(this).is(':checked')) {
+
+            table = $(this).parent().siblings(".table").show()
+            $(this).siblings(".mdl-switch__label").text("Table Preview")
+
+            raw = $(this).parent().siblings(".raw").hide()
+
+        }
+        else{
+            table = $(this).parent().siblings(".table").hide()
+            $(this).siblings(".mdl-switch__label").text("Raw Content")
+            raw = $(this).parent().siblings(".raw").show()
+            }
+
+    });
+    
+    $(".table_metadata").on('change', function(){
+        
+        var v = $(this).val();
+        var p= $(this).siblings("input")
+        if ( v == "date" ){
+            p.show();
+            p.attr('placeholder' ,"e.g. M/d/yyyy");
+        } else if ( v == "dateTime" || v == "dateTimeStamp"){
+            p.show();
+            p.attr('placeholder' ,"e.g. yyyy-MM-ddTHH:mm:ss");
+        } else {
+            p.hide();
+        }
+    })
+    {% endblock %}
+  

@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}About{% endblock %}
+{% set active_page = "index" -%}
+{% block content %}
+     <!-- Your content goes here -->
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--1-col"></div>
+            <div class="mdl-cell mdl-cell--10-col">
+                <div class="mdl-card mdl-cell mdl-cell--12-col">
+                    <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                        <h2 class="mdl-card__title-text">About</h2>
+                    </div>
+
+                    <div class="mdl-card__supporting-text">
+                        <p>
+                            The <b>CSV Engine</b> is a project by the <a href="http://ai.wu.ac.at/">Institute for Information Business</a>
+                            at WU Vienna (<a href="http://wu.ac.at/">Vienna University of Economics and Business</a>).
+                            It is a collection of tools and services for processing and enriching CSV files.
+
+                        </p>
+                        <p>
+                            This is a research project and we try to add more features and fix bugs.
+                            Any feedback, bug reports, and other comments are very welcome.
+                            Please use the following email address for contact: <br/><b>contact (at) data.wu.ac.at</b>
+                        </p>
+
+                        <h5>CSV Engine team:</h5>
+                        <ul>
+                            <li>Jürgen Umbrich</li>
+                            <li>Sebastian Neumaier</li>
+                            <li>Axel Polleres</li>
+                        </ul>
+
+                        <h5>About the Services</h5>
+                        <ul>
+                            <li class=" mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                                The <a href="{{ url_for('ui.csvclean') }}">CSV Clean</a> service is based on
+                                <a href="https://github.com/sebneu/anycsv">anycsv</a>, a simple and robust CSV parser.
+                            </li>
+
+                            <li class=" mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                                The <a href="{{ url_for('ui.csvmeditor') }}">CSV Metadata generator</a>, by Manuel Undesser,
+                                was developed in the course of a Bachelor thesis at WU Vienna.
+                                The metadata is compliant with the <a href="https://www.w3.org/2013/csvw/wiki/Main_Page">CSV on the Web metadata specification</a>.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+ {% endblock %}
+
+

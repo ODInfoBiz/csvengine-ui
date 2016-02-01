@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import 'table_factory.html' as tFactory %}
+{% import 'forms.html' as forms %}
+
+{% block title %}CSV Clean Results -{% endblock %}  
+{% set active_page = "csvclean" -%}
+
+{% block style %}
+    
+   {{ tFactory.tableCSS()}}
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="mdl-grid">
+        <div class="mdl-cell  mdl-cell--1-col"></div>
+        <div class="mdl-cell  mdl-cell--10-col">
+            <div style="width:100%">
+            {{tFactory.table_fromData(data, 'download', url_for('datacache.get_cleand_file')+'?fileID='+data.title)}}
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ tFactory.tableJS() }}
+{% endblock %}

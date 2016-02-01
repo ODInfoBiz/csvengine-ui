@@ -24,6 +24,7 @@ The frontend is using the [Material Design Lite](http://www.getmdl.io/index.html
 * `$ python setup.py install`
 * `$ ./runner -h`  to show help
 * `$ ./runner -c template_config.yaml -p 3333`  to start the UI at port 3333
+* visit [http://localhost:3333/csvengine/](http://localhost:3333/csvengine/)
 
 In case you host this service, please make sure to regularly delete the temp filder
 
@@ -34,7 +35,7 @@ The config file is in the YAML format and contains parameter for the local file 
 * Restful API for the services
 
 ## Team
-This project is an effort of serval people and was created in  as part of a bachelor thesis of Manuel Undesser at the WU Vienna.
+This project is an effort of serval people and was created in  as part of a bachelor thesis of Manuel Undesser with the title "*Metadata editor for CSV files with JSON output*" at the WU Vienna.
 The following people currently contributed to the code base:
 * Jürgen Umbrich 
 * Sebastian Neumaier

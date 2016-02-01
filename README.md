@@ -1,9 +1,12 @@
 # CSV Engine
+The "CSV Engine" is a web server offering a set of services to handle and process CSV files. One of the main feature in the current version is an editor to create an initial version of the **[CSV on the Web metadata standard file](https://www.w3.org/2013/csvw/wiki/Main_Page)**. 
 
+We hope that people find this tool useful and will join or contribute to the project by providing feedback, bug reports, feature requests or code contributions.
 
+## Under the hood
+The tool is implemented in Python 2.7 using the FLASK web server framework and the Jinja2 template engine. 
 
-## UI
-We are currently the [Material Design Lite](http://www.getmdl.io/index.html) framework.
+The frontend is using the [Material Design Lite](http://www.getmdl.io/index.html) framework for the layout and some basic Javascripts.
 
 
 ## Requirements
@@ -12,7 +15,6 @@ We are currently the [Material Design Lite](http://www.getmdl.io/index.html) fra
 
 2) **pyyacp** `pip install git+git://github.com/ODInfoBiz/pyyacp.git`
 
-3) 
 
 ##Setup
 * `$ git clone git@github.com:ODInfoBiz/csvengine-ui.git`
@@ -27,6 +29,22 @@ In case you host this service, please make sure to regularly delete the temp fil
 
 ## Config file
 The config file is in the YAML format and contains parameter for the local file storage and UI setup.
+
+##TODO's
+* Restful API for the services
+
+## Team
+This project is an effort of serval people and was created in  as part of a bachelor thesis of Manuel Undesser at the WU Vienna.
+The following people currently contributed to the code base:
+* Jürgen Umbrich 
+* Sebastian Neumaier
+* Nina Mrzeli
+* Manual Undesser
+
+## Similar projects
+**Python**
+* ..
+
 
 ##License
 The MIT License (MIT)

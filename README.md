@@ -10,11 +10,23 @@ We are currently the [Material Design Lite](http://www.getmdl.io/index.html) fra
 1) **anycsv**
 `pip install git+git://github.com/sebneu/anycsv.git`
 
-2) **pyyacp** `pip install git+git://github.com/ODInfoBiz/pyyacp.git@v0.1`
+2) **pyyacp** `pip install git+git://github.com/ODInfoBiz/pyyacp.git`
+
+3) 
 
 ##Setup
-* install requirements 
-* `python setup.py install`
+* `$ git clone git@github.com:ODInfoBiz/csvengine-ui.git`
+* `$ cd csvengine-ui`
+* (optionally) setup virtual environment
+* install github requirements 
+* `$ python setup.py install`
+* `$ ./runner -h`  to show help
+* `$ ./runner -c template_config.yaml -p 3333`  to start the UI at port 3333
+
+In case you host this service, please make sure to regularly delete the temp filder
+
+## Config file
+The config file is in the YAML format and contains parameter for the local file storage and UI setup.
 
 ##License
 The MIT License (MIT)

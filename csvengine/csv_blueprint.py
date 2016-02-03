@@ -80,7 +80,7 @@ def csvclean_service():
     title = url if url else fileID
     original = datacache.getSubmit(fileID)
     rows = len(original.split('\n'))
-    results={ 'orig': decode_utf8(original), 'sample': table.sample, 'title': title, 'cols': table.columns, 'rows': rows}
+    results={ 'orig': decode_utf8(original), 'sample': table.sample, 'title': title, 'cols': table.columns, 'rows': rows, 'fileID': fileID}
 
     return my_render_template("csv_clean_results.html", data=results)
     #return Response(smart_table.generate(table), mimetype='text/csv')
